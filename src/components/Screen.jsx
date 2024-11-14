@@ -1,8 +1,8 @@
-export default function Screen({ value }) {
+export default function Screen({ display, result }) {
   return (
     <div className="calculator__screen">
-      <div className="history">{value}</div>
-      <div className="result">580000</div>
+      <div className="history">{display}</div>
+      <div className="result">{result}</div>
     </div>
   );
 }

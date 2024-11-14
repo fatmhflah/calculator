@@ -8,15 +8,31 @@ import Screen from "./components/Screen";
 import data from "./data/data";
 
 function App() {
-  const [valueBtn, setValueBtn] = useState("");
+  // const [valueBtn, setValueBtn] = useState("");
+  const [display, setDisplay] = useState("");
+  const [resultBtn, setResultBtn] = useState([]);
 
   const handleClick = (value) => {
-    setValueBtn((prev) => prev + value);
+    if (value === "=") {
+      console.log(resultBtn);
+
+      // console.log(resultBtn.join("").split(/(\D)/g));
+      const result = resultBtn
+        .join("")
+        .split(/(\D)/g)
+        .map((value) => (isNaN(value) ? value : parseInt(value)));
+
+      setDisplay(resultBtn);
+      setResultBtn([resultBtn]);
+    } else {
+      setDisplay((prev) => prev + value);
+      setResultBtn((prev) => [...prev, value]);
+    }
   };
 
   return (
     <div className="calculator">
-      <Screen value={valueBtn} />
+      <Screen display={display} result={resultBtn} />
       <div className="calculator__buttons">
         <div className="calculator__buttons-numbers">
           {data.map((data, index) => (
