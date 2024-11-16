@@ -1,4 +1,3 @@
-// import { useState } from 'react';
 import { useState } from "react";
 import "./App.css";
 import "./assets/calculator.css";
@@ -8,28 +7,52 @@ import Screen from "./components/Screen";
 import data from "./data/data";
 
 function App() {
-  // const [valueBtn, setValueBtn] = useState("");
   const [display, setDisplay] = useState("");
   const [resultBtn, setResultBtn] = useState([]);
 
-  const handleClick = (value) => {
-    if (value === "=") {
-      console.log(resultBtn);
+    const handleClick = (value) => {
 
-      // console.log(resultBtn.join("").split(/(\D)/g));
-      const result = resultBtn
-        .join("")
-        .split(/(\D)/g)
-        .map((value) => (isNaN(value) ? value : parseInt(value)));
 
-      setDisplay(resultBtn);
-      setResultBtn([resultBtn]);
-    } else {
-      setDisplay((prev) => prev + value);
-      setResultBtn((prev) => [...prev, value]);
-    }
-  };
+        if (value === "=") {
+            console.log(resultBtn);
+            const result = resultBtn
+                .join("")
+                .split(/(\D)/g)
+                .map((value) => (isNaN(value) ? value : parseInt(value)))
+                .reduce((acc, value, index, array) => {
+                    switch (value) {
+                        case "+":
+                            return (acc = acc + array[index + 1]);
+                        case "-":
+                            return (acc = acc - array[index + 1]);
+                        case "*":
+                            return (acc = acc * array[index + 1]);
+                        case "÷":
+                            return (acc = acc / array[index + 1]);
+                        default:
+                            return acc;
+                    }
+                });
+            setDisplay(result);
+            setResultBtn([]);
+        }
+        else if (value === "AC") {
+            setDisplay("");
+            setResultBtn([]);
+        }
+        else if (value === "C") {
+            setDisplay(prev => prev.slice(0, -1));
+            setResultBtn(prev => prev.slice(0, -1));
+        }
 
+
+        else {
+            setDisplay(prev => prev + value); // اضافه کردن به display
+            setResultBtn(prev => [...prev, value]); // اضافه کردن به resultBtn
+        }
+
+
+    };
   return (
     <div className="calculator">
       <Screen display={display} result={resultBtn} />
